@@ -1,0 +1,10 @@
+<%= if @current_user do %>
+  <div class="header">
+    <ol class="breadcrumb text-right">
+      <li><%= @current_user.username %></li>
+      <li>
+        <%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %>
+      </li>
+    </ol>
+  </div>
+<% end %>

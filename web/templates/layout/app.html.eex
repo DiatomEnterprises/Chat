@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Chat Demo</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+    <div class="container" role="main">
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= render ChatDemo.SharedView, "current_user.html", conn: @conn, current_user: @current_user %>
+
+      <%= render @view_module, @view_template, assigns %>
+
+    </div> <!-- /container -->
+    <script>window.userToken = "<%= assigns[:user_token] %>";</script>
+    <script id="entry-template" type="text/x-handlebars-template">
+      <div class="col-sm-9 entry">
+        <h4>Name: {{name}}</h4>
+        <div class="body">
+          Message: {{message}}
+        </div>
+        <div class="time">
+          Time: {{time}}
+        </div>
+      </div>
+      <hr>
+    </script>
+
+    <script id="user-template" type="text/x-handlebars-template">
+      <div class="col-sm-5 user" id={{id}}>
+        Name: {{name}}
+        <div class="online">
+          Online: {{online}}
+        </div>
+        <div class="avatar">
+          {{avatar}}
+        </div>
+      </div>
+    </script>
+
+    <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

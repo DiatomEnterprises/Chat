@@ -1,0 +1,7 @@
+<%= form_for @conn, session_path(@conn, :create), [as: :session], fn f -> %>
+  <%= email_input f, :email, placeholder: "Email", class: "form-control" %>
+  <%= password_input f, :password, placeholder: "Password", class: "form-control" %>
+  <%= submit "Log in", class: "btn btn-primary" %>
+<% end %>
+
+<%= link "Registration", to: user_path(@conn, :new), class: "btn btn-default btn-xs" %>

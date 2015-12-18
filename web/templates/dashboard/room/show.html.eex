@@ -1,0 +1,19 @@
+<h2><%= @room.name %></h2>
+<div class="chat-container" data-id= "<%=@room.id%>">
+  <h4>Users</h4>
+  <div class="row users-container"></div>
+  <hr>
+
+  <div id="msg-container" class="row col-sm-9 breadcrumb text-left"></div>
+
+  <div class="row">
+    <input type="text" class="form-control" id="msg-input" placeholder="Message">
+  </div>
+
+  <div class="row form-group">
+    <button id="msg-submit" type="submit" class="btn btn-primary">Send</button>
+  </div>
+</div>
+
+<%= link "Edit", to: room_path(@conn, :edit, @room) %>
+<%= link "Back", to: room_path(@conn, :index) %>
