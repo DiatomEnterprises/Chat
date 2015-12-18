@@ -4,13 +4,21 @@ defmodule ChatDemo.RoomChannel do
 
   def join("rooms:" <> room_id, payload, socket) do
     if authorized?(payload) do
-      user = socket.assigns.user
       RoomService.join_room(socket.assigns.user, room_id);
+      socket = assign(socket, :room_id, room_id)
+      send(self, :after_join)
       {:ok, assign(socket, :room_id, room_id)}
+
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
+
+  def handle_info(:after_join, socket) do
+    broadcast socket, "user_joined", %{id: socket.assigns.user.id }
+    {:noreply, socket}
+  end
+
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
@@ -49,25 +57,11 @@ defmodule ChatDemo.RoomChannel do
     end
   end
 
-  # This is invoked every time a notification is being broadcast
-  # to the client. The default implementation is just to push it
-  # downstream but one could filter or change the event.
 
-  intercept ["user_joined"]
-
-  def handle_out("user_joined", msg, socket) do
-    # if User.ignoring?(socket.assigns[:user], msg.user_id) do
-    #   {:noreply, socket}
-    # else
-      push socket, "user_joined", msg
-      {:noreply, socket}
-    # end
-  end
-
-  def handle_out(event, payload, socket) do
-    push socket, event, payload
-    {:noreply, socket}
-  end
+  # def handle_out(event, payload, socket) do
+  #   push socket, event, payload
+  #   {:noreply, socket}
+  # end
 
   def terminate({reason, action}, socket) do
     RoomService.channel_action(socket.assigns.user, action)

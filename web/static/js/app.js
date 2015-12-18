@@ -56,17 +56,20 @@ if (chatContain) {
   });
 
   channel.on("new_entry", (res) =>{
-    console.log(res);
     let context = {name: res.name, message: res.body, time: res.time }
     addElement(msgContainer, entryTemplate(context));
   });
+
   channel.on("leave", (res) =>{
     $('.user#'+res.id + ' .online').text("Online: false")
   });
 
+  channel.on("user_joined", (res) =>{
+    $('.user#'+ res.id + ' .online').text("Online: true")
+  });
+
   channel.join()
   .receive("ok", resp => {
-    console.log("Joined successfully")
     channel.push("history")
       .receive("error", error => { console.log(error) })
     channel.push("users")
