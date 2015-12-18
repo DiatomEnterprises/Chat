@@ -5,7 +5,7 @@ defmodule ChatDemo.Room do
     field :name, :string
     has_many :entries, ChatDemo.Entry
     has_many :user_rooms, ChatDemo.UserRooms
-    has_many :users, through: [:user_rooms, :room]
+    has_many :users, through: [:user_rooms, :user]
     timestamps
   end
 

@@ -40,11 +40,7 @@ defmodule ChannelServices.RoomService do
   def users(room_id) do
     room_id = String.to_integer(room_id)
     room = Repo.get!(ChatDemo.Room, room_id)
-    users = Repo.all(
-      from u in ChatDemo.User,
-        join: r in assoc(u, :rooms),
-      select: u
-    )
+    users = Repo.all assoc(room, :users)
     %{ users: Phoenix.View.render_many(users, UserView, "user.json")}
   end
 
